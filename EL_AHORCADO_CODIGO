@@ -1,0 +1,55 @@
+#LLAMAMOS A LAS FUNCIONES DEL SISTEMA OPERATIVO
+import os
+
+#DEFINIMOS FUNCION PARA LIMPIAR LA PANTALLA
+def clear_screen():
+    os.system('cls' if os.name == 'nt' else 'clear')
+
+clear_screen()
+
+#INGRESAR PALABRA A ADIVINAR
+palabra= input("INGRESE PALABRA A SER ADIVINADA: " )
+clear_screen ()
+     
+#TRANSFORMAR PALABRA A GUION
+oculta= ['_'] * len(palabra)
+
+while True:
+    print("LA PALABRA A ADIVINAR ES: ", " ".join(oculta))
+    print() 
+
+    #INTRODUCIR UNA LETRA
+    letra= input("INTRODUZCA UNA LETRA: ")
+    clear_screen()
+
+    #INDICAMOS PARA QUE SE INGRESE UNA SOLA LETRA
+    if not letra.isalpha() or len(letra) != 1:
+        print("POR FAVOR, INGRESE SOLO UNA LETRA.")
+        continue
+    
+    #VERIFICAR SI LA LETRA ESTA EN LA PALABRA A ADIVINAR
+    if letra in palabra:
+        print(f"LA LETRA '{letra}' ESTÁ EN LA PALABRA SECRETA")
+
+        #REEMPLAZAMOS LA LETRA EN SU LUGAR
+        for i in range(len(palabra)):
+            if palabra[i] == letra:
+                oculta[i] = letra
+    
+        #VERIFICAR SI GANAMOS       
+        if '_' not in oculta:
+            clear_screen()
+            print("¡FELICIDADES!¡HAS ADIVINADO LA PALABRA SECRETA!")
+            print(f"¡LA PALABRA ERA '{palabra}'!")
+            break
+
+    else:
+        print(f"LA LETRA '{letra}' NO ESTÁ EN LA PALABRA SECRETA.")    
+
+        #VERIFICAR SI PERDIMOS 
+        if '_' in oculta:
+            clear_screen()
+            print(f"¡HAZ PERDIDO! ¡LA PALABRA ERA '{palabra}'!")
+            break
+
+print ("GRACIAS POR JUGAR EL AHORCADO")
