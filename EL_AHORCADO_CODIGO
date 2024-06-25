@@ -14,8 +14,12 @@ clear_screen ()
 #TRANSFORMAR PALABRA A GUION
 oculta= ['_'] * len(palabra)
 
+#NUMERO DE VIDAS
+vidas= 5
+
 while True:
     print("LA PALABRA A ADIVINAR ES: ", " ".join(oculta))
+    print(f"VIDAS RESTANTES: {vidas}")
     print() 
 
     #INTRODUCIR UNA LETRA
@@ -44,10 +48,11 @@ while True:
             break
 
     else:
-        print(f"LA LETRA '{letra}' NO ESTÁ EN LA PALABRA SECRETA.")    
+        print(f"LA LETRA '{letra}' NO ESTÁ EN LA PALABRA SECRETA.")   
+        vidas -= 1 
 
         #VERIFICAR SI PERDIMOS 
-        if '_' in oculta:
+        if vidas == 0:
             clear_screen()
             print(f"¡HAZ PERDIDO! ¡LA PALABRA ERA '{palabra}'!")
             break
