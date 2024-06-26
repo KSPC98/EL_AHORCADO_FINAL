@@ -1,35 +1,135 @@
 #LLAMAMOS A LAS FUNCIONES DEL SISTEMA OPERATIVO
 import os
+import random
 
 #DEFINIMOS FUNCION PARA LIMPIAR LA PANTALLA
 def clear_screen():
     os.system('cls' if os.name == 'nt' else 'clear')
 
-clear_screen()
+#LISTA DE PALABRAS PARA EL JUEGO
+adivinar=['PHYTON', 'PROGRAMACION','ORDENADOR', 'AHORCADO', 'JUEGO', 'AUTONOMO', 'PRACTICA', 'DICCIONARIO', 'PROBLEMAS']
 
-#INGRESAR PALABRA A ADIVINAR
-palabra= input("INGRESE PALABRA A SER ADIVINADA: " )
-clear_screen ()
-     
+#DEFINIMOS PALABRA SEGUN NIVEL DE DIFICULTAD
+def elegir_palabra(nivel):
+    if nivel == 'facil':
+        return random.choice(['PHYTON', 'JUEGO', 'ORDENADOR'])
+    elif nivel == 'medio':
+        return random.choice(['AHORCADO', 'AUTONOMO', 'PRACTICA'])
+    elif nivel == 'dificil':
+        return random.choice(['PROGRAMACION', 'DICCIONARIO', 'PROBLEMAS'])
+    else:
+        return random.choice(adivinar)
+
+#SELECCIONAR NIVEL DE DIFICULTAD
+def seleccionar_nivel():
+    while True:
+        clear_screen()
+        print("SELECCIONE UN NIVEL DE DIFICULTAD: ")
+        print("1. FACIL")
+        print("2. MEDIO")
+        print("3. DIFICIL")
+        opcion= input("INGRESE EL NUMERO CORRESPONDIENTE AL NIVEL (1/2/3): ")
+
+        if opcion == '1':
+            return 'facil'
+        elif opcion == '2':
+            return 'medio'
+        elif opcion == '3':
+            return 'dificil'
+        else:
+            print("OPCION NO VALIDA. INGRESE 1, 2 O 3.")
+            input("PRESIONE ENTER PARA CONTINUAR...")
+            clear_screen()
+
+#DIBUJO EL AHORCADO
+def dibujar_ahorcado(vidas):
+    if vidas == 5:
+        print("  ____ ")
+        print(" |    |")
+        print(" |")
+        print(" |")
+        print(" |")
+        print(" |")
+        print("_|___")
+    elif vidas == 4:
+        print("  ____ ")
+        print(" |    |")
+        print(" |    O")
+        print(" |")
+        print(" |")
+        print(" |")
+        print("_|___")
+    elif vidas == 3:
+        print("  ____ ")
+        print(" |    |")
+        print(" |    O")
+        print(" |    |")
+        print(" |")
+        print(" |")
+        print("_|___")
+    elif vidas == 2:
+        print("  ____ ")
+        print(" |    |")
+        print(" |    O")
+        print(" |   /|")
+        print(" |")
+        print(" |")
+        print("_|___")
+    elif vidas == 1:
+        print("  ____ ")
+        print(" |    |")
+        print(" |    O")
+        print(" |   /|\\")
+        print(" |")
+        print(" |")
+        print("_|___")
+    else:
+        print("  ____ ")
+        print(" |    |")
+        print(" |    O")
+        print(" |   /|\\")
+        print(" |   / \\")
+        print(" |")
+        print("_|___")
+
+#FUNCIONES A VARIABLES MAS SENCILLAS
+nivel= seleccionar_nivel()
+palabra= elegir_palabra(nivel).upper()
+
 #TRANSFORMAR PALABRA A GUION
 oculta= ['_'] * len(palabra)
 
 #NUMERO DE VIDAS
 vidas= 5
 
+#LETRAS USADAS
+usadas= []
+
 while True:
+    clear_screen()
+    dibujar_ahorcado(vidas)
     print("LA PALABRA A ADIVINAR ES: ", " ".join(oculta))
-    print(f"VIDAS RESTANTES: {vidas}")
+    print(f"VIDAS RESTANTES: {vidas}") #VIDAS MENOS 1 PARA AJUSTE VISUAL
+    print(f"LETRAS UTILIZADAS: {' '.join(usadas)}")
     print() 
 
     #INTRODUCIR UNA LETRA
-    letra= input("INTRODUZCA UNA LETRA: ")
-    clear_screen()
+    letra= input("INTRODUZCA UNA LETRA: ").strip().upper()
+    
+    #INDICAR LETRA USADA
+    if letra in usadas:
+        print("¡YA HAS INTENTADO CON ESA LETRA!.")
+        input("PRESIONA ENTER PARA CONTINUAR...")
+        continue
 
     #INDICAMOS PARA QUE SE INGRESE UNA SOLA LETRA
     if not letra.isalpha() or len(letra) != 1:
         print("POR FAVOR, INGRESE SOLO UNA LETRA.")
+        input("PRESIONA ENTER PARA CONTINUAR...")
         continue
+
+    #GRABAR LETRAS INGRESADAS
+    usadas.append(letra)
     
     #VERIFICAR SI LA LETRA ESTA EN LA PALABRA A ADIVINAR
     if letra in palabra:
@@ -54,6 +154,7 @@ while True:
         #VERIFICAR SI PERDIMOS 
         if vidas == 0:
             clear_screen()
+            dibujar_ahorcado(vidas)
             print(f"¡HAZ PERDIDO! ¡LA PALABRA ERA '{palabra}'!")
             break
 
