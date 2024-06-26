@@ -109,7 +109,7 @@ while True:
     clear_screen()
     dibujar_ahorcado(vidas)
     print("LA PALABRA A ADIVINAR ES: ", " ".join(oculta))
-    print(f"VIDAS RESTANTES: {vidas}") #VIDAS MENOS 1 PARA AJUSTE VISUAL
+    print(f"VIDAS RESTANTES: {vidas}")
     print(f"LETRAS UTILIZADAS: {' '.join(usadas)}")
     print() 
 
